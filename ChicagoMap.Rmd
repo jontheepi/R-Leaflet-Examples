@@ -1,0 +1,24 @@
+---
+title: "Map: Chicago Medical Examiner Open Data, December 2018"
+author: "Jonathan Gross"
+date: "January 21, 2019"
+output: html_document
+---
+
+```{r,echo=FALSE,warning=FALSE}
+library(shiny)
+library(leaflet)
+h3("Developing Data Products: Week 2")
+h4("Data Source:",a("Cook County Open Data",href="https://datacatalog.cookcountyil.gov/Public-Safety/Medical-Examiner-Case-Archive/cjeq-bs86"))
+
+# Import open data from Chicago
+mapdata<-read.csv("C:/Users/Jon/Desktop/Medical_Examiner_Case_Archive.csv",header=TRUE,sep=",")
+map_label<-paste0("Date:",mapdata$Date.of.Death,"<br>","Age:",mapdata$Age,"<br>","Gender:",mapdata$Gender,"<br>","Race:",mapdata$Race,"<br>","Manner of Death:",mapdata$Manner.of.Death,"<br>","Primary Cause:",mapdata$Primary.Cause)
+```
+
+```{r,echo=FALSE,warning=FALSE,out.width='100%'}
+my_map<-leaflet()%>%addTiles()%>%setView(lat=41.8781,lng=-87.75,zoom=10)%>%
+  addMarkers(lat=mapdata$latitude,lng=mapdata$longitude,popup = map_label,clusterOptions=(markerClusterOptions()))%>%
+  addMiniMap()
+my_map
+```
